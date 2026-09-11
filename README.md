@@ -1,87 +1,75 @@
-# erdos376-successor-frontier
+# Erdős #376 — exact carry criterion and a 1,006-digit simultaneous witness
 
-**An explicit 1,006-digit integer above 10^1000 whose base-3 digits are all ≤ 1, base-5 digits
-all ≤ 2, and base-7 digits all ≤ 3 — with two independent implementations and a matching
-SHA-256.**
+**An exact Kummer-theoretic characterization of `gcd(C(2n,n),105)=1`, together with an explicit 1,006-digit integer above `10^1000` satisfying the equivalent base-3/base-5/base-7 digit restrictions.** The witness is reproduced by two independently written implementations with matching SHA-256.
 
 Author: Jared Wilder. First public timestamp: 2026-09-11. Computation dated 2026-08-31.
 
----
+## Exact arithmetic criterion
 
-## The object
+By Kummer's theorem,
 
-`result_10e1000_primary.txt` holds a single decimal integer, 1,006 digits long, beginning
+`gcd(C(2n,n),105)=1`
 
-```
+if and only if adding `n+n` creates no carry in bases 3, 5, and 7. Equivalently:
+
+- every base-3 digit of `n` is at most 1;
+- every base-5 digit of `n` is at most 2;
+- every base-7 digit of `n` is at most 3.
+
+The proof is in [`KUMMER-CARRY-CRITERION.md`](KUMMER-CARRY-CRITERION.md).
+
+## The 1,006-digit object
+
+`result_10e1000_primary.txt` contains a 1,006-digit decimal integer, beginning
+
+```text
 6648341784810543686763252701549801974897...
 ```
 
 and ending
 
-```
+```text
 ...3352330758364059436406195682601857609512
 ```
 
-It is claimed to be the **least** integer at or above 10^1000 that is simultaneously
-3-restricted, 5-restricted and 7-restricted in the sense of Erdős 376.
+It satisfies all three digit restrictions and therefore also satisfies
 
-## Verified from scratch, 2026-09-11
+`gcd(C(2n,n),105)=1`.
 
-Re-checked directly from the committed bytes, with no reliance on the shipped receipts:
+## Independent reproduction
+
+Rechecked directly from the committed bytes:
 
 | check | result |
 |---|---|
 | decimal digits | **1,006** |
-| N ≥ 10^1000 | **yes** |
-| maximum base-3 digit | **1** (must be ≤ 1) |
-| maximum base-5 digit | **2** (must be ≤ 2) |
-| maximum base-7 digit | **3** (must be ≤ 3) |
-| SHA-256 of the decimal plus a newline | `20b4c56371db6929ffe00d73fd8c2cf7be50f25f9ddbaaa96f7f4f31da2a2847` |
+| `N >= 10^1000` | **yes** |
+| maximum base-3 digit | **1** |
+| maximum base-5 digit | **2** |
+| maximum base-7 digit | **3** |
+| SHA-256 of decimal plus newline | `20b4c56371db6929ffe00d73fd8c2cf7be50f25f9ddbaaa96f7f4f31da2a2847` |
 | documented SHA-256 | **identical** |
-| `result_10e1000_independent.txt` | **agrees digit for digit with the primary** |
+| independent result file | **agrees digit for digit** |
 
-The two result files come from **two independently written programs** — `next376.cpp` and
-`next376_alt.cpp`, with a third implementation in `next376.py`. They agree.
+The two result files come from independently written programs `next376.cpp` and `next376_alt.cpp`; a third implementation is provided in `next376.py`.
 
-The run header records the cost: `D=1000 it=11620 sec=18.9143 digits=1006 good=1` — eleven
-thousand six hundred and twenty successor jumps, under nineteen seconds.
+The run header records `D=1000 it=11620 sec=18.9143 digits=1006 good=1`.
 
-## The method, and what makes it terminate
+## Successor method and minimality within the search construction
 
-The accompanying note states the closure property the search rests on:
+The search repeatedly jumps to the next member of each of the three digit-restricted sets. The accompanying closure argument shows that if their intersection contains an integer at least a threshold `T`, monotone successor iteration reaches the **least** common member at least `T`.
 
-> "If `S_3 ∩ S_5 ∩ S_7` contains some integer `y ≥ T`, the iteration terminates, and its terminal
-> fixed point is the **least** common member at least `T`."
+For `T=10^1000`, both independent implementations arrive at the same committed integer.
 
-That is what turns an unbounded search into a finite one: repeatedly jump to the next member of
-each restricted set, and the process is monotone and lands on the least common member ≥ T rather
-than merely *a* member.
+Thus the minimality claim is supported by the stated successor-closure argument plus independent implementations; it is not presently a proof-assistant theorem.
 
-## Scope
+## Relation to smaller-range work
 
-This specific 1,006-digit integer satisfies all three digit restrictions, exceeds
-10^1000, is reproducible from the shipped source, and is the least such integer at or above
-10^1000 *according to the successor closure argument and two agreeing implementations*.
-
-This is a single certified witness, which is a different quantity from the published July-2026
-exhaustive treatment that counted **all** solutions through 10^100. A witness far above a range
-and a census of that range are not comparable numbers.
-
-The minimality rests on the closure argument in the accompanying note -- an argument, not a
-proof-assistant theorem.
+This 1,006-digit witness and an exhaustive census through `10^100` are different mathematical objects. The former establishes an explicit very large simultaneous solution; the latter classifies a finite range.
 
 ## Reproduce it
 
-The C++ and Python implementations are both here. The digit checks need nothing but arbitrary
-precision integers:
-
-```
-max base-3 digit of N  must be <= 1
-max base-5 digit of N  must be <= 2
-max base-7 digit of N  must be <= 3
-```
-
-`SHA256SUMS` ships with the packet and covers every file.
+The C++ and Python implementations are included. Direct verification only requires arbitrary-precision arithmetic and the digit conditions above. `SHA256SUMS` covers the packet.
 
 ## License
 
