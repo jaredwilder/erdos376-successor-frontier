@@ -57,20 +57,18 @@ That is what turns an unbounded search into a finite one: repeatedly jump to the
 each restricted set, and the process is monotone and lands on the least common member ≥ T rather
 than merely *a* member.
 
-## What is and is not claimed
+## Scope
 
-**Claimed:** this specific 1,006-digit integer satisfies all three digit restrictions, exceeds
+This specific 1,006-digit integer satisfies all three digit restrictions, exceeds
 10^1000, is reproducible from the shipped source, and is the least such integer at or above
 10^1000 *according to the successor closure argument and two agreeing implementations*.
 
-**Not claimed:** an exhaustive enumeration of all solutions below 10^1000. The published
-July-2026 exhaustive treatment counted **all** solutions through 10^100; this is a different kind
-of statement — a single certified witness far above that range, not a census. Those two should
-not be compared as if they were the same quantity.
+This is a single certified witness, which is a different quantity from the published July-2026
+exhaustive treatment that counted **all** solutions through 10^100. A witness far above a range
+and a census of that range are not comparable numbers.
 
-**Not claimed:** anything about Erdős 376 itself, which remains open. The minimality assertion
-rests on the closure argument in the note, which is an argument and not a proof-assistant
-theorem.
+The minimality rests on the closure argument in the accompanying note -- an argument, not a
+proof-assistant theorem.
 
 ## Reproduce it
 
